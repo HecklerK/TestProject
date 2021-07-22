@@ -63,19 +63,19 @@ namespace TestProject
 
         private string GET(int id) // функция get запроса к серверу
         {
-            System.Net.WebRequest req = System.Net.WebRequest.Create("http://tmgwebtest.azurewebsites.net/api/textstrings/" + id.ToString());
+            System.Net.WebRequest req = System.Net.WebRequest.Create("http://tmgwebtest.azurewebsites.net/api/textstrings/" + id.ToString()); // Создание запроса
             req.Headers.Add("TMG-Api-Key", "0J/RgNC40LLQtdGC0LjQutC4IQ==");
-            try
+            try // Отправка запроса
             {
                 System.Net.WebResponse resp = req.GetResponse();
                 System.IO.Stream stream = resp.GetResponseStream();
                 System.IO.StreamReader sr = new System.IO.StreamReader(stream);
-                string Out = sr.ReadToEnd();
+                string Out = sr.ReadToEnd(); // Получения ответа
                 sr.Close();
-                var obj = JsonSerializer.Deserialize<JText>(Out);
+                var obj = JsonSerializer.Deserialize<JText>(Out); // десериализирование json
                 return obj.text;
             }
-            catch (Exception e)
+            catch (Exception e) // обработка ошибок
             {
                 MessageBox.Show("Request: " + req.RequestUri.ToString() + "  Error: " + e.Message);
                 return null;
@@ -92,12 +92,12 @@ namespace TestProject
             for (int i = 0; i < smas.Length; i++)
             {
                 int buf;
-                if (!int.TryParse(smas[i], out buf))
+                if (!int.TryParse(smas[i], out buf)) // поиск не числовых значений
                 {
                     MessageBox.Show("Значение индефикатора " + smas[i] + " не является числом");
                     continue;
                 }
-                for (int j = 0; j < c; j++)
+                for (int j = 0; j < c; j++) // поиск дублирующихся индификаторов
                 {
                     if (imas[j] == buf) duplicate = true;
                 }
@@ -110,7 +110,7 @@ namespace TestProject
             return imas;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e) // функция обработки нажатия на кнопку
         {
             list.Items.Clear();
             int[] id = TextSlise();
